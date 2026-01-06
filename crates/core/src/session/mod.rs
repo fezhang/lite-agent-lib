@@ -18,16 +18,16 @@ use crate::logs::LogStore;
 /// Manages agent sessions and their associated log stores.
 /// Provides CRUD operations for sessions and execution tracking.
 pub struct SessionManager {
-    _sessions: Arc<RwLock<HashMap<String, SessionState>>>,
-    _log_stores: Arc<RwLock<HashMap<String, Arc<LogStore>>>>,
+    sessions: Arc<RwLock<HashMap<String, SessionState>>>,
+    log_stores: Arc<RwLock<HashMap<String, Arc<LogStore>>>>,
 }
 
 impl SessionManager {
     /// Create a new session manager
     pub fn new() -> Self {
         Self {
-            _sessions: Arc::new(RwLock::new(HashMap::new())),
-            _log_stores: Arc::new(RwLock::new(HashMap::new())),
+            sessions: Arc::new(RwLock::new(HashMap::new())),
+            log_stores: Arc::new(RwLock::new(HashMap::new())),
         }
     }
 
