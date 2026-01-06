@@ -49,21 +49,26 @@ async fn main() {
 from lite_agent_client import LiteAgentClient, SpawnRequest
 
 async def main():
-    client = LiteAgentClient("http://localhost:3000")
+    # Use as context manager (recommended)
+    async with LiteAgentClient("http://localhost:3000") as client:
+        # Spawn agent
+        response = await client.spawn_agent(SpawnRequest(
+            agent_type="shell",
+            input="echo hello"
+        ))
 
-    # Spawn agent
-    response = await client.spawn_agent(SpawnRequest(
-        agent_type="shell",
-        input="echo hello",
-        config={}
-    ))
+        # Stream logs
+        async for log in client.stream_logs(response.session_id):
+            print(f"[{log.level}] {log.content}")
 
-    # Stream logs
-    async for log in client.stream_logs(response.session_id):
-        print(f"[{log.entry_type}] {log.content}")
+asyncio.run(main())
 ```
 
+See the [Python client documentation](python/README.md) for more details.
+
 ## Installation
+
+### Rust
 
 Add to your `Cargo.toml`:
 
@@ -72,13 +77,28 @@ Add to your `Cargo.toml`:
 lite-agent-core = "0.1.0"
 ```
 
+### Python
+
+```bash
+pip install lite-agent-client
+```
+
+Or from source:
+
+```bash
+cd python
+pip install -e .
+```
+
 ## Documentation
 
 - [Architecture Overview](docs/architecture.md) - Design philosophy and core components
 - [API Reference](docs/api_reference.md) - Complete API documentation
 - [Workspace & Agent Configuration](docs/workspace_and_agent_configuration.md) - Understanding workspaces and configuration
 - [Reference Documentation](docs/reference/) - Production design patterns that informed this library
-- [Examples](examples/) - Usage examples in Rust and Python
+- [Python Client Documentation](python/README.md) - Python client guide and API reference
+- [Examples](crates/examples/examples/) - Usage examples in Rust
+- [Python Examples](python/examples/) - Usage examples in Python
 
 ## Development Status
 
@@ -90,7 +110,7 @@ Current status:
 - ✅ Phase 3: Session & Workspace - Complete
 - ✅ Phase 4: High-Level API & Examples - Complete
 - ✅ Phase 5: REST API Server - Complete
-- ⏳ Phase 6: Python Client
+- ✅ Phase 6: Python Client - Complete
 
 ## License
 
