@@ -108,9 +108,9 @@ pub trait AgentExecutor: Send + Sync {
     /// A new `SpawnedAgent` that continues the previous session
     async fn spawn_follow_up(
         &self,
-        config: &AgentConfig,
-        input: &str,
-        session_id: &str,
+        _config: &AgentConfig,
+        _input: &str,
+        _session_id: &str,
     ) -> Result<SpawnedAgent, AgentError> {
         // Default implementation: session continuation not supported
         Err(AgentError::Custom(format!(
