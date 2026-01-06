@@ -75,12 +75,12 @@ impl SessionManager {
 
         // Store session and log store
         {
-            let mut sessions = self.sessions.write().await;
+            let mut sessions = self._sessions.write().await;
             sessions.insert(session_id.clone(), session);
         }
 
         {
-            let mut log_stores = self.log_stores.write().await;
+            let mut log_stores = self._log_stores.write().await;
             log_stores.insert(session_id.clone(), log_store);
         }
 
@@ -97,7 +97,7 @@ impl SessionManager {
     ///
     /// The session state if found
     pub async fn get_session(&self, session_id: &str) -> Option<SessionState> {
-        let sessions = self.sessions.read().await;
+        let sessions = self._sessions.read().await;
         sessions.get(session_id).cloned()
     }
 
@@ -107,7 +107,7 @@ impl SessionManager {
     ///
     /// A vector of all session states
     pub async fn get_all_sessions(&self) -> Vec<SessionState> {
-        let sessions = self.sessions.read().await;
+        let sessions = self._sessions.read().await;
         sessions.values().cloned().collect()
     }
 
@@ -122,7 +122,7 @@ impl SessionManager {
         session_id: &str,
         status: SessionStatus,
     ) -> Result<(), AgentError> {
-        let mut sessions = self.sessions.write().await;
+        let mut sessions = self._sessions.write().await;
         let session = sessions
             .get_mut(session_id)
             .ok_or_else(|| AgentError::SessionNotFound(session_id.to_string()))?;
@@ -160,7 +160,7 @@ impl SessionManager {
             input,
         };
 
-        let mut sessions = self.sessions.write().await;
+        let mut sessions = self._sessions.write().await;
         let session = sessions
             .get_mut(session_id)
             .ok_or_else(|| AgentError::SessionNotFound(session_id.to_string()))?;
@@ -187,7 +187,7 @@ impl SessionManager {
         status: ExecutionStatus,
         exit_code: Option<i32>,
     ) -> Result<(), AgentError> {
-        let mut sessions = self.sessions.write().await;
+        let mut sessions = self._sessions.write().await;
         let session = sessions
             .get_mut(session_id)
             .ok_or_else(|| AgentError::SessionNotFound(session_id.to_string()))?;
@@ -223,7 +223,7 @@ impl SessionManager {
     ///
     /// The log store if found
     pub async fn get_log_store(&self, session_id: &str) -> Option<Arc<LogStore>> {
-        let log_stores = self.log_stores.read().await;
+        let log_stores = self._log_stores.read().await;
         log_stores.get(session_id).cloned()
     }
 
@@ -235,7 +235,7 @@ impl SessionManager {
     pub async fn delete_session(&self, session_id: &str) -> Result<(), AgentError> {
         // Remove session
         {
-            let mut sessions = self.sessions.write().await;
+            let mut sessions = self._sessions.write().await;
             sessions
                 .remove(session_id)
                 .ok_or_else(|| AgentError::SessionNotFound(session_id.to_string()))?;
@@ -243,7 +243,7 @@ impl SessionManager {
 
         // Remove log store
         {
-            let mut log_stores = self.log_stores.write().await;
+            let mut log_stores = self._log_stores.write().await;
             log_stores.remove(session_id);
         }
 
@@ -261,11 +261,11 @@ impl SessionManager {
     /// Number of sessions cleaned up
     pub async fn cleanup_old_sessions(&self, older_than: chrono::Duration) -> usize {
         let cutoff = Utc::now() - older_than;
-        let mut to_remove = Vec::new();
+        let mut to_remove: Vec<String> = Vec::new();
 
         // Find old sessions
         {
-            let sessions = self.sessions.read().await;
+            let sessions = self._sessions.read().await;
             for (id, session) in sessions.iter() {
                 if session.updated_at < cutoff {
                     to_remove.push(id.clone());
@@ -505,7 +505,7 @@ mod tests {
 
         // Manually update the timestamp to make it old
         {
-            let mut sessions = manager.sessions.write().await;
+            let mut sessions = manager._sessions.write().await;
             if let Some(session) = sessions.get_mut(&session_id) {
                 session.updated_at = Utc::now() - chrono::Duration::hours(25);
             }
