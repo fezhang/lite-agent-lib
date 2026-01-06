@@ -65,6 +65,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("\n=== Example 5: Workspace Isolation ===");
 
     let temp_dir = tempfile::tempdir()?;
+    let agent = ShellAgent::new();
     let runner = AgentRunner::with_workspace(agent, temp_dir.path().to_path_buf());
 
     let config = AgentConfig::new(PathBuf::from("."));
