@@ -22,7 +22,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Run the agent with input
     println!("Running echo agent...");
-    let result = runner.run("Hello, lite-agent-lib!", &config).await?;
+    let result = runner.run("Hello, lite-agent-lib!", config).await?;
 
     println!("\n=== Result ===");
     println!("Success: {}", result.success);

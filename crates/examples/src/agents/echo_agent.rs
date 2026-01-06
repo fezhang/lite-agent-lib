@@ -13,7 +13,8 @@ use lite_agent_core::{
     NormalizedEntry, SpawnedAgent,
 };
 
-use command_group::CommandGroup;
+use command_group::AsyncCommandGroup;
+use tokio::process::Command as TokioCommand;
 
 /// Simple echo agent that repeats input back
 ///
@@ -47,12 +48,17 @@ impl AgentExecutor for EchoAgent {
     ) -> Result<SpawnedAgent, AgentError> {
         // Use the system's echo command
         let mut cmd = if cfg!(windows) {
-            std::process::Command::new("cmd")
-                .args(["/c", "echo", input])
+            TokioCommand::new("cmd")
         } else {
-            std::process::Command::new("echo")
-                .arg(input)
+            TokioCommand::new("echo")
         };
+
+        // Add arguments
+        if cfg!(windows) {
+            cmd.args(["/c", "echo", input]);
+        } else {
+            cmd.arg(input);
+        }
 
         // Configure working directory
         cmd.current_dir(&config.work_dir);
@@ -72,20 +78,15 @@ impl AgentExecutor for EchoAgent {
             .group_spawn()
             .map_err(|e| AgentError::SpawnError(format!("Failed to spawn echo agent: {}", e)))?;
 
-        // Get stdio handles before converting
-        let stdin = child.stdin();
-        let stdout = child.stdout();
-        let stderr = child.stderr();
-
         // Create log store
         let log_store = Arc::new(LogStore::new());
 
-        // Create spawned agent
+        // Create spawned agent (stdio handles are managed by the command itself)
         let spawned = SpawnedAgent {
             child,
-            stdin,
-            stdout,
-            stderr,
+            stdin: None,
+            stdout: None,
+            stderr: None,
             exit_signal: None,
             interrupt_signal: None,
             log_store,

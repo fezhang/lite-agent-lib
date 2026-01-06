@@ -18,10 +18,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Example 1: Basic configuration
     println!("=== Example 1: Basic Configuration ===");
-    let runner = AgentRunner::new(&agent);
+    let runner = AgentRunner::new(agent);
 
     let config = AgentConfig::new(PathBuf::from("."));
-    let result = runner.run("echo 'Hello from AgentRunner!'", &config).await?;
+    let result = runner.run("echo 'Hello from AgentRunner!'", config).await?;
 
     println!("Success: {}", result.success);
     println!("Output: {}", result.output);
@@ -39,7 +39,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         "echo $MY_VAR"
     };
 
-    let result = runner.run(command, &config).await?;
+    let result = runner.run(command, config).await?;
     println!("Output: {}", result.output);
 
     // Example 3: Configuration with timeout
@@ -48,14 +48,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let config = AgentConfig::new(PathBuf::from("."))
         .with_timeout(Duration::from_secs(5));
 
-    let result = runner.run("echo 'With timeout'", &config).await?;
+    let result = runner.run("echo 'With timeout'", config).await?;
     println!("Success: {}", result.success);
 
     // Example 4: Error handling
     println!("\n=== Example 4: Error Handling ===");
 
     let config = AgentConfig::new(PathBuf::from("."));
-    let result = runner.run("false", &config).await?; // Command that fails
+    let result = runner.run("false", config).await?; // Command that fails
 
     println!("Command failed (as expected)");
     println!("Success: {}", result.success);
@@ -65,10 +65,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("\n=== Example 5: Workspace Isolation ===");
 
     let temp_dir = tempfile::tempdir()?;
-    let runner = AgentRunner::with_workspace(&agent, temp_dir.path().to_path_buf());
+    let runner = AgentRunner::with_workspace(agent, temp_dir.path().to_path_buf());
 
     let config = AgentConfig::new(PathBuf::from("."));
-    let result = runner.run("echo 'Running in isolated workspace'", &config).await?;
+    let result = runner.run("echo 'Running in isolated workspace'", config).await?;
 
     println!("Success: {}", result.success);
     println!("Workspace isolation: enabled");

@@ -4,7 +4,7 @@
 //! It supports both Windows (cmd.exe) and Unix (sh/bash) systems.
 
 use async_trait::async_trait;
-use command_group::CommandGroup;
+use command_group::AsyncCommandGroup;
 use futures_util::stream::{self, BoxStream, StreamExt};
 use std::process::Stdio;
 use std::sync::Arc;
@@ -13,6 +13,8 @@ use lite_agent_core::{
     AgentCapability, AgentConfig, AgentError, AgentExecutor, AvailabilityStatus, EntryType,
     LogStore, NormalizedEntry, SpawnedAgent,
 };
+
+use tokio::process::Command as TokioCommand;
 
 /// Shell command executor
 ///
@@ -65,7 +67,7 @@ impl AgentExecutor for ShellAgent {
         let shell = Self::get_shell_command();
         let args = Self::get_shell_args(input);
 
-        let mut cmd = std::process::Command::new(shell);
+        let mut cmd = TokioCommand::new(shell);
         cmd.args(&args);
 
         // Configure working directory
@@ -86,20 +88,15 @@ impl AgentExecutor for ShellAgent {
             .group_spawn()
             .map_err(|e| AgentError::SpawnError(format!("Failed to spawn shell: {}", e)))?;
 
-        // Get stdio handles
-        let stdin = child.stdin();
-        let stdout = child.stdout();
-        let stderr = child.stderr();
-
         // Create log store
         let log_store = Arc::new(LogStore::new());
 
-        // Create spawned agent
+        // Create spawned agent (stdio handles are managed by the command itself)
         let spawned = SpawnedAgent {
             child,
-            stdin,
-            stdout,
-            stderr,
+            stdin: None,
+            stdout: None,
+            stderr: None,
             exit_signal: None,
             interrupt_signal: None,
             log_store,

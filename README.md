@@ -89,7 +89,7 @@ Current status:
 - ✅ Phase 2: Protocol & Logs - Complete
 - ✅ Phase 3: Session & Workspace - Complete
 - ✅ Phase 4: High-Level API & Examples - Complete
-- ⏳ Phase 5: REST API Server
+- ✅ Phase 5: REST API Server - Complete
 - ⏳ Phase 6: Python Client
 
 ## License

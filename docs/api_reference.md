@@ -464,8 +464,12 @@ This API reference will be updated as the library is implemented across Phases 2
 
 **Current Status:**
 - ✅ Phase 1: Core Foundation (AgentExecutor, AgentConfig, SpawnedAgent, Errors)
-- ⏳ Phase 2: Protocol & Logs
-- ⏳ Phase 3: Session & Workspace
-- ⏳ Phase 4: High-Level API
-- ⏳ Phase 5: REST API Server
+- ✅ Phase 2: Protocol & Logs
+- ✅ Phase 3: Session & Workspace
+- ✅ Phase 4: High-Level API
+- ✅ Phase 5: REST API Server
 - ⏳ Phase 6: Python Client
+
+## REST API
+
+For REST API documentation, see [REST API Server](rest_api.md). The REST API provides HTTP endpoints with SSE log streaming for cross-language integration.

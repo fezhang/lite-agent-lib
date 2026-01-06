@@ -3,7 +3,7 @@
 //! Demonstrates how to implement your own agent by using the AgentExecutor trait.
 
 use async_trait::async_trait;
-use command_group::CommandGroup;
+use command_group::AsyncCommandGroup;
 use futures_util::stream::{self, BoxStream, StreamExt};
 use lite_agent_core::{
     AgentCapability, AgentConfig, AgentError, AgentExecutor, AgentRunner, AvailabilityStatus,
@@ -11,6 +11,7 @@ use lite_agent_core::{
 };
 use std::process::Stdio;
 use std::sync::Arc;
+use tokio::process::Command as TokioCommand;
 
 /// Custom greeting agent
 ///
@@ -47,12 +48,16 @@ impl AgentExecutor for GreetingAgent {
         let message = format!("{} {}!", self.greeting, input);
 
         let mut cmd = if cfg!(windows) {
-            std::process::Command::new("cmd")
-                .args(["/c", "echo", &message])
+            TokioCommand::new("cmd")
         } else {
-            std::process::Command::new("echo")
-                .arg(&message)
+            TokioCommand::new("echo")
         };
+
+        if cfg!(windows) {
+            cmd.args(["/c", "echo", &message]);
+        } else {
+            cmd.arg(&message);
+        }
 
         cmd.current_dir(&config.work_dir);
 
@@ -70,9 +75,9 @@ impl AgentExecutor for GreetingAgent {
 
         let spawned = SpawnedAgent {
             child,
-            stdin: child.stdin(),
-            stdout: child.stdout(),
-            stderr: child.stderr(),
+            stdin: None,
+            stdout: None,
+            stderr: None,
             exit_signal: None,
             interrupt_signal: None,
             log_store: Arc::new(LogStore::new()),
@@ -127,7 +132,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Run the agent
     let config = AgentConfig::new(std::path::PathBuf::from("."));
-    let result = runner.run("User", &config).await?;
+    let result = runner.run("User", config).await?;
 
     println!("\n=== Result ===");
     println!("Success: {}", result.success);

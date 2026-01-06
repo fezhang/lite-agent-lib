@@ -31,7 +31,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     println!("Executing command: {}", command);
-    let result = runner.run(command, &config).await?;
+    let result = runner.run(command, config).await?;
 
     println!("\n=== Result ===");
     println!("Success: {}", result.success);
