@@ -34,8 +34,8 @@ pub mod workspace;
 
 // Convenience re-exports for common types
 pub use agent::{
-    AgentCapability, AgentConfig, AgentError, AgentExecutor, AgentResult, AvailabilityStatus,
-    ExitResult, SpawnedAgent,
+    AgentCapability, AgentConfig, AgentError, AgentExecutor, AgentResult, AgentRunner,
+    AvailabilityStatus, ExitResult, RunResult, SpawnedAgent,
 };
 
 pub use logs::{ActionInfo, ActionStatus, EntryType, ErrorType, LogStore, NormalizedEntry};

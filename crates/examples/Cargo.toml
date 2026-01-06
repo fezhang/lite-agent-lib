@@ -5,6 +5,22 @@ edition.workspace = true
 authors.workspace = true
 license.workspace = true
 
+[[bin]]
+name = "basic_echo"
+path = "examples/basic_echo.rs"
+
+[[bin]]
+name = "basic_shell"
+path = "examples/basic_shell.rs"
+
+[[bin]]
+name = "agent_runner"
+path = "examples/agent_runner.rs"
+
+[[bin]]
+name = "custom_agent"
+path = "examples/custom_agent.rs"
+
 [dependencies]
 lite-agent-core = { path = "../core" }
 
@@ -21,3 +37,15 @@ anyhow = { workspace = true }
 
 # Utilities
 futures-util = { workspace = true }
+
+# Logging
+tracing-subscriber = "0.3"
+
+# Temp directory for examples
+tempfile = { workspace = true }
+
+# Process management
+command-group = { workspace = true }
+
+# Time
+chrono = { workspace = true }

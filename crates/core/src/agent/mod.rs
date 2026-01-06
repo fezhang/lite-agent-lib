@@ -10,10 +10,12 @@ use std::sync::Arc;
 
 pub mod config;
 pub mod error;
+pub mod runner;
 pub mod spawned;
 
 pub use config::AgentConfig;
 pub use error::{AgentError, AgentResult};
+pub use runner::{AgentRunner, RunResult};
 pub use spawned::{ExitResult, SpawnedAgent};
 
 use crate::logs::{LogStore, NormalizedEntry};

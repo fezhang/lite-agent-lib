@@ -34,10 +34,12 @@ async fn main() {
     let executor = MyCustomAgent::new();
     let runner = AgentRunner::new(executor);
 
-    // Run agent
+    // Run agent with high-level API
     let config = AgentConfig::default();
-    let result = runner.run("your input", config).await.unwrap();
-    println!("Result: {}", result);
+    let result = runner.run("your input", &config).await.unwrap();
+
+    println!("Success: {}", result.success);
+    println!("Output: {}", result.output);
 }
 ```
 
@@ -83,10 +85,10 @@ lite-agent-core = "0.1.0"
 🚧 **Under Active Development** - This library is currently being built following a 6-phase implementation plan.
 
 Current status:
-- ✅ Phase 1: Core Foundation - In Progress
-- ⏳ Phase 2: Protocol & Logs
-- ⏳ Phase 3: Session & Workspace
-- ⏳ Phase 4: High-Level API & Examples
+- ✅ Phase 1: Core Foundation - Complete
+- ✅ Phase 2: Protocol & Logs - Complete
+- ✅ Phase 3: Session & Workspace - Complete
+- ✅ Phase 4: High-Level API & Examples - Complete
 - ⏳ Phase 5: REST API Server
 - ⏳ Phase 6: Python Client
 

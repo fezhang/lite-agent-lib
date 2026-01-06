@@ -16,6 +16,20 @@ pub enum ExitResult {
     Interrupted,
 }
 
+impl ExitResult {
+    /// Get the exit code (if available)
+    ///
+    /// Returns `Some(0)` for success, `Some(code)` for failure,
+    /// and `None` for interrupted processes.
+    pub fn exit_code(&self) -> Option<i32> {
+        match self {
+            ExitResult::Success => Some(0),
+            ExitResult::Failure(code) => Some(*code),
+            ExitResult::Interrupted => None,
+        }
+    }
+}
+
 /// Result of spawning an agent
 ///
 /// This struct contains the spawned process handle and communication channels.

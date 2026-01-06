@@ -1,7 +1,8 @@
 //! lite-agent-examples
 //!
-//! Example agent implementations (to be implemented in Phase 4)
+//! Example agent implementations demonstrating the `AgentExecutor` trait.
 
-pub fn placeholder() {
-    // Stub to allow compilation
-}
+pub mod agents;
+
+pub use agents::echo_agent::EchoAgent;
+pub use agents::shell_agent::ShellAgent;
