@@ -1,0 +1,148 @@
+# Rust/Cargo
+/target/
+**/*.rs.bk
+*.pdb
+nul
+
+# Cargo.lock is committed for binaries, but not for libraries
+# Uncomment the next line if you want to commit Cargo.lock for reproducible builds
+# !Cargo.lock
+
+# Build artifacts
+debug/
+target/
+Cargo.lock
+
+# MSVC Windows builds
+*.exe
+*.pdb
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# IDEs and Editors
+# VSCode
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# CLion
+cmake-build-*/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+*.swp
+*.swo
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+
+# Environment and Secrets
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+secrets/
+*.secret
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+*.orig
+
+# Python (for Python examples/client)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node.js (if any JS tooling is added)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Documentation build artifacts
+_site/
+.jekyll-cache/
+docs/_build/
+
+# Package managers
+Pipfile.lock
+poetry.lock
+package-lock.json
+yarn.lock
+
+# Test coverage
+coverage/
+*.profraw
+*.profdata
+
+# OS-specific
+.Spotlight-V100
+.Trashes
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Backup files
+*.bak
+*.gho
+*.ori
+*.orig
+*.tmp
+
+# Misc
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal

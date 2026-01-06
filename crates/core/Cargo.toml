@@ -1,0 +1,40 @@
+[package]
+name = "lite-agent-core"
+version = "0.1.0"
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+# Async runtime
+tokio = { workspace = true }
+async-trait = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+
+# Utilities
+uuid = { workspace = true }
+chrono = { workspace = true }
+futures = { workspace = true }
+tracing = { workspace = true }
+
+# Process management
+command-group = { workspace = true }
+
+# Git operations
+git2 = { workspace = true }
+
+# Async streams
+tokio-stream = { workspace = true }
+futures-util = { workspace = true }
+tokio-util = { workspace = true }
+bytes = { workspace = true }
+
+[dev-dependencies]
+tempfile = { workspace = true }
