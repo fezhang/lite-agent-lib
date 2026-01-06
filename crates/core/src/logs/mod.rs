@@ -5,7 +5,6 @@
 //! and real-time broadcasting to multiple consumers.
 
 use chrono::Utc;
-use futures_util::stream::StreamExt;
 use serde::{Deserialize, Serialize};
 use std::pin::Pin;
 use std::sync::Arc;
@@ -332,8 +331,6 @@ impl TextLogNormalizer {
 
 impl LogNormalizer for TextLogNormalizer {
     fn normalize(&self, raw_logs: Arc<LogStore>) -> LogEntryStream {
-        let agent_type = self.agent_type.clone();
-
         // Get entries upfront to avoid async in stream
         let entries = tokio::task::block_in_place(|| {
             tokio::runtime::Handle::try_current().unwrap().block_on(raw_logs.get_entries())
@@ -341,6 +338,13 @@ impl LogNormalizer for TextLogNormalizer {
 
         // Create a simple iterator stream
         Box::pin(futures_util::stream::iter(entries))
+    }
+}
+
+impl TextLogNormalizer {
+    /// Get the agent type
+    pub fn agent_type(&self) -> &str {
+        &self.agent_type
     }
 }
 
@@ -431,8 +435,6 @@ impl JsonLogNormalizer {
 
 impl LogNormalizer for JsonLogNormalizer {
     fn normalize(&self, raw_logs: Arc<LogStore>) -> LogEntryStream {
-        let agent_type = self.agent_type.clone();
-
         // Get entries upfront to avoid async in stream
         let entries = tokio::task::block_in_place(|| {
             tokio::runtime::Handle::try_current().unwrap().block_on(raw_logs.get_entries())
@@ -451,7 +453,7 @@ impl LogNormalizer for JsonLogNormalizer {
                         entry_type: EntryType::Output,
                         content: entry.content.clone(),
                         metadata: None,
-                        agent_type: agent_type.clone(),
+                        agent_type: self.agent_type.clone(),
                     })
                 }
             })
@@ -459,6 +461,13 @@ impl LogNormalizer for JsonLogNormalizer {
 
         // Create a simple iterator stream
         Box::pin(futures_util::stream::iter(normalized))
+    }
+}
+
+impl JsonLogNormalizer {
+    /// Get the agent type
+    pub fn agent_type(&self) -> &str {
+        &self.agent_type
     }
 }
 
@@ -496,8 +505,15 @@ mod tests {
         );
         store.add_entry(entry).await;
 
-        // Receive from stream
-        let received = stream.next().await.unwrap();
+        // Receive from stream using tokio::time::timeout to avoid blocking
+        use tokio::time::{timeout, Duration};
+        let result = timeout(Duration::from_millis(100), async {
+            use futures_util::StreamExt;
+            stream.next().await.unwrap()
+        })
+        .await;
+        assert!(result.is_ok());
+        let received = result.unwrap();
         assert_eq!(received.content, "test");
     }
 
@@ -536,7 +552,6 @@ mod tests {
     #[test]
     fn test_entry_type() {
         let input_type = EntryType::Input;
-        let output_type = EntryType::Output;
         let error_type = EntryType::Error {
             error_type: ErrorType::Timeout,
         };

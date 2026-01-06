@@ -99,8 +99,8 @@ impl WorkspacePath {
 ///
 /// Manages workspace creation and cleanup with proper locking to prevent race conditions.
 pub struct WorkspaceManager {
-    base_dir: PathBuf,
-    locks: Arc<Mutex<HashMap<String, Arc<tokio::sync::Mutex<()>>>>>,
+    _base_dir: PathBuf,
+    _locks: Arc<Mutex<HashMap<String, Arc<tokio::sync::Mutex<()>>>>>,
 }
 
 impl WorkspaceManager {
@@ -111,8 +111,8 @@ impl WorkspaceManager {
     /// * `base_dir` - Base directory for workspace operations
     pub fn new(base_dir: PathBuf) -> Self {
         Self {
-            base_dir,
-            locks: Arc::new(Mutex::new(HashMap::new())),
+            _base_dir: base_dir,
+            _locks: Arc::new(Mutex::new(HashMap::new())),
         }
     }
 
