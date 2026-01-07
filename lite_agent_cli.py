@@ -17,8 +17,18 @@ AVAILABLE_EXAMPLES = [
     "agent_runner",
     "basic_echo",
     "basic_shell",
+    "claude_code_cli",
     "custom_agent",
 ]
+
+# Binaries (use --bin instead of --example)
+BINARIES = {
+    "agent_runner",
+    "basic_echo",
+    "basic_shell",
+    "claude_code_cli",
+    "custom_agent",
+}
 
 
 def print_error(message: str) -> None:
@@ -90,7 +100,7 @@ def cmd_test(args: argparse.Namespace) -> int:
 
 
 def cmd_sample(args: argparse.Namespace) -> int:
-    """Run a specific example using cargo run --example."""
+    """Run a specific example using cargo run --example or --bin."""
     if not args.name:
         print_error("Sample name is required.")
         print_info(f"Available samples: {', '.join(AVAILABLE_EXAMPLES)}")
@@ -103,7 +113,9 @@ def cmd_sample(args: argparse.Namespace) -> int:
         print_info(f"Available samples: {', '.join(AVAILABLE_EXAMPLES)}")
         return 1
 
-    cargo_args = ["cargo", "run", "--example", args.name]
+    # Use --bin for binaries, --example for regular examples
+    flag = "--bin" if args.name in BINARIES else "--example"
+    cargo_args = ["cargo", "run", flag, args.name]
 
     # Add any extra arguments directly to cargo
     if args.extra:

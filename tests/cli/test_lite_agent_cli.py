@@ -158,25 +158,40 @@ class TestCmdSample(unittest.TestCase):
 
     @patch('lite_agent_cli.run_command')
     def test_cmd_sample_valid(self, mock_run):
-        """Test sample command with valid name."""
+        """Test sample command with valid name (binary)."""
         mock_run.return_value = 0
         args = argparse.Namespace(name='basic_echo', extra=None)
         result = lite_agent_cli.cmd_sample(args)
         self.assertEqual(result, 0)
+        # basic_echo is now a binary, so it uses --bin
         mock_run.assert_called_once_with(
-            ['cargo', 'run', '--example', 'basic_echo'],
+            ['cargo', 'run', '--bin', 'basic_echo'],
             'Example: basic_echo'
         )
 
     @patch('lite_agent_cli.run_command')
+    def test_cmd_sample_claude_code_cli(self, mock_run):
+        """Test sample command with claude_code_cli binary."""
+        mock_run.return_value = 0
+        args = argparse.Namespace(name='claude_code_cli', extra=None)
+        result = lite_agent_cli.cmd_sample(args)
+        self.assertEqual(result, 0)
+        # claude_code_cli is a binary
+        mock_run.assert_called_once_with(
+            ['cargo', 'run', '--bin', 'claude_code_cli'],
+            'Example: claude_code_cli'
+        )
+
+    @patch('lite_agent_cli.run_command')
     def test_cmd_sample_with_extra_args(self, mock_run):
-        """Test sample command with extra arguments."""
+        """Test sample command with extra arguments (binary)."""
         mock_run.return_value = 0
         args = argparse.Namespace(name='basic_shell', extra=['--', '--help'])
         result = lite_agent_cli.cmd_sample(args)
         self.assertEqual(result, 0)
+        # basic_shell is now a binary, so it uses --bin
         mock_run.assert_called_once_with(
-            ['cargo', 'run', '--example', 'basic_shell', '--', '--help'],
+            ['cargo', 'run', '--bin', 'basic_shell', '--', '--help'],
             'Example: basic_shell'
         )
 

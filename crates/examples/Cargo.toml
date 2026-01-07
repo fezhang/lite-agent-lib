@@ -21,6 +21,10 @@ path = "examples/agent_runner.rs"
 name = "custom_agent"
 path = "examples/custom_agent.rs"
 
+[[bin]]
+name = "claude_code_cli"
+path = "examples/claude_code_cli.rs"
+
 [dependencies]
 lite-agent-core = { path = "../core" }
 

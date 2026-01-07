@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(find:*)",
+      "Bash(cargo check:*)",
+      "Bash(python -m pytest:*)"
     ]
   }
 }
