@@ -290,7 +290,7 @@ pub enum AgentError {
 The REST API server provides HTTP/SSE interface:
 
 ```
-Python/HTTP Client
+HTTP Client
     ↓
 Axum Routes
     ├→ POST /api/agents/spawn

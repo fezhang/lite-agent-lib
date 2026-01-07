@@ -411,7 +411,7 @@ async fn main() -> Result<(), AgentError> {
 
 ## REST API (Phase 5)
 
-The REST API server will provide HTTP endpoints for Python and other clients.
+The REST API server provides HTTP endpoints as a reference backend implementation.
 
 ### Endpoints
 
@@ -467,8 +467,7 @@ This API reference will be updated as the library is implemented across Phases 2
 - ✅ Phase 2: Protocol & Logs
 - ✅ Phase 3: Session & Workspace
 - ✅ Phase 4: High-Level API
-- ✅ Phase 5: REST API Server
-- ⏳ Phase 6: Python Client
+- ✅ Phase 5: REST API Server (Reference Backend)
 
 ## REST API
 

@@ -31,7 +31,7 @@ lite-agent-lib differs from vibe-kanban in several ways:
 - **Generic vs. Coding-Specific**: Supports any agent type, not just coding agents
 - **Library vs. Application**: Reusable library, not a complete application
 - **Simplified**: Focuses on core patterns, removes UI and project management
-- **REST API**: Python integration via HTTP/SSE instead of native integration
+- **REST API**: HTTP/SSE reference backend for language-agnostic integration
 - **No Database**: In-memory session state instead of SQLite
 
 ## License
