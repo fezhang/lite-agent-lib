@@ -10,7 +10,6 @@ A lightweight, async-first Rust library for managing different kinds of agents w
 - **Log Normalization**: Unified log format across different agent types
 - **Session Management**: Track sessions and support conversation continuity
 - **Workspace Isolation**: Git worktree-based isolation for parallel agent execution
-- **REST API Server**: HTTP/SSE reference backend implementation
 - **No Hidden Dependencies**: All dependencies explicit and documented
 
 ## Architecture
@@ -18,7 +17,6 @@ A lightweight, async-first Rust library for managing different kinds of agents w
 The library is organized into several crates:
 
 - **`lite-agent-core`**: Core library with agent abstractions, protocols, logs, sessions, and workspace management
-- **`lite-agent-server`**: REST API server with SSE log streaming
 - **`lite-agent-examples`**: Example agent implementations (echo, shell)
 
 ## Quick Start
@@ -58,7 +56,6 @@ lite-agent-core = "0.1.0"
 - [Architecture Overview](docs/architecture.md) - Design philosophy and core components
 - [API Reference](docs/api_reference.md) - Complete API documentation
 - [Workspace & Agent Configuration](docs/workspace_and_agent_configuration.md) - Understanding workspaces and configuration
-- [Reference Documentation](docs/reference/) - Production design patterns that informed this library
 - [Examples](crates/examples/examples/) - Usage examples in Rust
 
 ## Development Status
@@ -70,7 +67,6 @@ Current status:
 - ✅ Phase 2: Protocol & Logs - Complete
 - ✅ Phase 3: Session & Workspace - Complete
 - ✅ Phase 4: High-Level API & Examples - Complete
-- ✅ Phase 5: REST API Server (Reference Backend) - Complete
 
 ## License
 

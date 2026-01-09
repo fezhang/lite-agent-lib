@@ -2,7 +2,6 @@
 resolver = "2"
 members = [
     "crates/core",
-    "crates/server",
     "crates/examples",
 ]
 
@@ -42,11 +41,6 @@ futures-util = "0.3"
 tokio-util = { version = "0.7", features = ["io", "codec"] }
 bytes = "1.0"
 async-stream = "0.3"
-
-# Web framework (for server)
-axum = { version = "0.8", features = ["macros"] }
-tower = "0.5"
-tower-http = { version = "0.5", features = ["cors", "trace"] }
 
 # Testing
 tempfile = "3.0"
