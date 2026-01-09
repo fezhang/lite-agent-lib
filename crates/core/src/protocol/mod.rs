@@ -3,6 +3,7 @@
 //! This module provides JSON streaming protocol support for bidirectional communication
 //! with agent processes. It handles message parsing, serialization, and stdio management.
 
+pub mod control;
 pub mod messages;
 
 use async_trait::async_trait;
